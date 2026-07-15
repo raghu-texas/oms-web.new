@@ -34,7 +34,7 @@ const PracticeManagement = () => {
       <div className="relative w-full mx-auto">
         <div
           ref={containerRef}
-          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border w-[90%] mx-auto bg-white"
+          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border w-[90%] mx-auto bg-white aspect-[15/10] flex items-center justify-center"
           style={{ borderColor: '#D2DEF9' }}
           onMouseMove={handleMove}
           onMouseEnter={handleMove}
@@ -43,7 +43,7 @@ const PracticeManagement = () => {
           <ImageWithFallback
             src={src}
             alt={alt}
-            className="w-full h-[360px] object-cover rounded-2xl"
+            className="max-w-full max-h-full object-cover rounded-2xl"
           />
         </div>
         <div

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ImageWithFallback from "@/components/ImageWithFallback";
 const HealthcareFeatures = () => {
-  const ZoomableImage = ({ src, alt }: { src: string; alt: string }) => {
+  const ZoomableImage = ({ src, alt, borderWidth = 1, borderColor = '#D2DEF9' }: { src: string; alt: string; borderWidth?: number; borderColor?: string }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [lens, setLens] = useState({ visible: false, rect: null as DOMRect | null });
 
@@ -37,22 +37,31 @@ const HealthcareFeatures = () => {
       <div className="relative w-full mx-auto">
         <div
           ref={containerRef}
-          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border w-[90%] mx-auto"
-          style={{ borderColor: '#D2DEF9' }}
+          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow w-[90%] h-[360px] mx-auto box-border"
           onMouseMove={handleMove}
           onMouseEnter={handleMove}
           onMouseLeave={handleLeave}
         >
-          <ImageWithFallback
-            src={src}
-            alt={alt}
-            className="w-full h-[360px] object-cover rounded-2xl"
-          />
+          <div className="w-full h-full overflow-hidden rounded-2xl">
+            <ImageWithFallback
+              src={src}
+              alt={alt}
+              className="w-full h-full object-cover rounded-2xl"
+              style={{
+                borderColor,
+                borderWidth: `${borderWidth}px`,
+                borderStyle: 'solid',
+                boxSizing: 'border-box'
+              }}
+            />
+          </div>
         </div>
         <div
-          className="pointer-events-none fixed w-[877px] h-[582px] rounded-2xl border shadow bg-white overflow-hidden"
+          className="pointer-events-none fixed w-[877px] h-[582px] rounded-2xl shadow bg-white overflow-hidden"
           style={{
-            borderColor: '#D2DEF9',
+            borderColor: borderColor,
+            borderWidth: `${borderWidth}px`,
+            borderStyle: 'solid',
             zIndex: 50,
             left: originX,
             top: originY,
@@ -60,14 +69,14 @@ const HealthcareFeatures = () => {
               ? `translate(calc(-50% + ${translateX}px), calc(-50% + ${translateY}px)) scale(1)` 
               : 'translate(-50%, -50%) scale(0.2)',
             opacity: lens.visible ? 1 : 0,
-            transition: 'all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            transition: '1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             visibility: lens.visible ? 'visible' : 'hidden',
           }}
         >
           <ImageWithFallback
             src={src}
             alt={`${alt} preview`}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-fill"
           />
         </div>
       </div>
@@ -79,29 +88,29 @@ const HealthcareFeatures = () => {
     title: "Practice Management Solutions",
     description: "Comprehensive practice management software that streamlines scheduling, billing, and workflow optimization. Our integrated platform helps you manage every aspect of your healthcare practice efficiently, from appointment booking to revenue cycle management. Reduce administrative burden and focus more on patient care with our intelligent automation features."
   }, {
-    image: patientPortalImage,
-    title: "Patient Portal & Engagement",
-    description: "Empower your patients with 24/7 access to their health records and appointment scheduling. Our secure patient portal enhances communication between providers and patients, improving satisfaction and outcomes. Features include online bill pay, prescription refills, secure messaging, and telehealth integration for modern healthcare delivery."
+    image: revenueCycleImage,
+    title: "Revenue Cycle Management",
+    description: "Maximize your practice's financial performance with our intelligent billing and revenue cycle management solution. Automated claim submission, denial management, and real-time eligibility verification streamline your billing processes. Our analytics dashboard provides insights into financial performance, helping you identify opportunities for revenue optimization."
   }, {
     image: emrImage,
     title: "Electronic Medical Records",
     description: "Advanced EMR system designed for seamless clinical documentation and data management. Our intuitive interface reduces charting time while ensuring accurate, comprehensive patient records. Built-in clinical decision support, customizable templates, and interoperability standards help you deliver evidence-based care efficiently and effectively."
   }, {
-    image: revenueCycleImage,
-    title: "Revenue Cycle Management",
-    description: "Maximize your practice's financial performance with our intelligent billing and revenue cycle management solution. Automated claim submission, denial management, and real-time eligibility verification streamline your billing processes. Our analytics dashboard provides insights into financial performance, helping you identify opportunities for revenue optimization."
+    image: patientPortalImage,
+    title: "Patient Portal & Engagement",
+    description: "Empower your patients with 24/7 access to their health records and appointment scheduling. Our secure patient portal enhances communication between providers and patients, improving satisfaction and outcomes. Features include online bill pay, prescription refills, secure messaging, and telehealth integration for modern healthcare delivery."
   }, {
-    image: hrImage,
-    title: "Human Resources",
-    description: "Maintain individual employee profiles with hiring, payroll and benefits details.  Manage and approve your staff's time punches, time off records for payroll processing with ADP. Track PTO, vacation, sick leave, jury and travel hours.  Additionally, the system supports automated generation of weekly, overtime, pay-period, and monthly timesheets."
+    image: referralImage,
+    title: "Referral Portal",
+    description: "Streamline patient referrals with our secure and efficient referral portal, ensuring seamless communication between providers."
   }, {
     image: accountsPayableImage,
     title: "Accounts Payable",
     description: "Scan and upload new invoices to track and manage payables.  Easily review and authorize vendor invoices for later payment by management or outside accountants.  Review paid invoice data or generate custom reports."
   }, {
-    image: referralImage,
-    title: "Referral Portal",
-    description: "Streamline patient referrals with our secure and efficient referral portal, ensuring seamless communication between providers."
+    image: hrImage,
+    title: "Human Resources",
+    description: "Maintain individual employee profiles with hiring, payroll and benefits details.  Manage and approve your staff's time punches, time off records for payroll processing with ADP. Track PTO, vacation, sick leave, jury and travel hours.  Additionally, the system supports automated generation of weekly, overtime, pay-period, and monthly timesheets."
   }];
   const lightBgTitles = [
     "Practice Management Solutions",
@@ -151,7 +160,8 @@ const HealthcareFeatures = () => {
             const isLightBg = lightBgTitles.includes(feature.title);
             const whiteBgTitles = ["Revenue Cycle Management", "Patient Portal & Engagement", "Accounts Payable"];
             const bgColor = whiteBgTitles.includes(feature.title) ? "#FFFFFF" : (isLightBg ? "#FAFCFD" : undefined);
-          const hasBorder = borderTitles.includes(feature.title);
+            const hasBorder = borderTitles.includes(feature.title);
+            const isThickBorder = ["Accounts Payable", "Practice Management Solutions", "Human Resources"].includes(feature.title);
           return <div
               key={index}
               className={`grid lg:grid-cols-2 gap-8 items-center p-8 rounded-2xl ${isLightBg ? 'text-black' : ''} ${hasBorder ? 'border' : ''}`}
@@ -159,7 +169,12 @@ const HealthcareFeatures = () => {
             >
                 {/* Image */}
                 <div className={`${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <ZoomableImage src={feature.image} alt={feature.title} />
+                  <ZoomableImage
+                    src={feature.image}
+                    alt={feature.title}
+                    borderWidth={isThickBorder ? 15 : 1}
+                    borderColor={isThickBorder ? '#000' : '#D2DEF9'}
+                  />
                 </div>
 
                 {/* Content */}

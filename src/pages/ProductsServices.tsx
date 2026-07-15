@@ -115,7 +115,7 @@ const ProductsServices = () => {
                     <div className="h-1 w-12 bg-gradient-to-l from-transparent to-[#2589CB] rounded-full" />
                   </div>
                   <h1 className="text-3xl sm:text-4xl font-bold mb-2 tracking-tight text-[#0D47A1] whitespace-nowrap">
-                    Apps & <span className="text-[#2589CB]">Services</span>
+                    Applications <span className="text-[#2589CB]"></span>
                   </h1>
                   {/* Decorative bottom marker */}
                   <div className="flex items-center justify-center gap-4 mt-0">
@@ -157,7 +157,7 @@ const ProductsServices = () => {
           
 
           {/* Applications Header */}
-          <h2 className="text-2xl font-bold mb-4 text-[#2589CB] text-center">Applications</h2>
+          <h2 className="text-2xl font-bold mb-4 text-[#2589CB] text-center">All Applications</h2>
           {/* Service Cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => {

@@ -82,7 +82,7 @@ const ServiceDetail = () => {
     </div>
   );
 
-  const ZoomableImage = ({ src, alt, height = "360px" }: { src: string; alt: string; height?: string }) => {
+  const ZoomableImage = ({ src, alt, height = "auto", borderWidth = 6, borderColor = '#010101' }: { src: string; alt: string; height?: string; borderWidth?: number; borderColor?: string }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [lens, setLens] = useState({ visible: false, rect: null as DOMRect | null });
 
@@ -106,8 +106,8 @@ const ServiceDetail = () => {
       <div className="relative w-full mx-auto">
         <div
           ref={containerRef}
-          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border w-full bg-white p-2"
-          style={{ borderColor: '#D2DEF9' }}
+          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border w-full bg-white flex items-center justify-center"
+          style={{ borderColor: borderColor, borderWidth: `${borderWidth}px`, height: height }}
           onMouseMove={handleMove}
           onMouseEnter={handleMove}
           onMouseLeave={handleLeave}
@@ -115,14 +115,14 @@ const ServiceDetail = () => {
           <ImageWithFallback
             src={src}
             alt={alt}
-            className={`w-full object-contain rounded-xl`}
-            style={{ height }}
+            className={`w-auto h-auto max-w-full max-h-full object-fill`}
           />
         </div>
         <div
           className="pointer-events-none fixed w-[877px] h-[582px] rounded-2xl border shadow bg-white overflow-hidden"
           style={{
-            borderColor: '#D2DEF9',
+            borderColor: borderColor,
+            borderWidth: `${borderWidth}px`,
             zIndex: 50,
             left: originX,
             top: originY,
@@ -137,7 +137,7 @@ const ServiceDetail = () => {
           <ImageWithFallback
             src={src}
             alt={`${alt} preview`}
-            className="w-full h-full object-contain"
+            className="w-auto h-full object-fill"
           />
         </div>
       </div>
@@ -189,7 +189,7 @@ const ServiceDetail = () => {
         {slug === "hr" ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
-              <ZoomableImage src={item.src} alt={item.title} height="360px" />
+              <ZoomableImage src={item.src} alt={item.title} height="fit-content" borderWidth={15} borderColor="#000" />
               <div className="space-y-6 md:border-l md:pl-6 border-[#D2DEF9]">
                 <p className="text-sm sm:text-base text-black">
                   The HR application enables users to manage and approve staff time punches and time-off records for payroll processing with ADP. It also includes an online onboarding system and comprehensive time-off management within the HR Information System.
@@ -496,7 +496,7 @@ const ServiceDetail = () => {
         ) : slug === "ap" ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              <ZoomableImage src={item.src} alt={item.title} height="360px" />
+              <ZoomableImage src={item.src} alt={item.title} height="fit-content" borderWidth={15} borderColor="#000" />
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
                   <h2 className="text-xl font-semibold text-[#0D47A1]">Accounts Payable</h2>
