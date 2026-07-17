@@ -3,7 +3,7 @@ import practiceMgmtImage from "@/assets/feature-practice-mgmt1.png";
 import patientPortalImage from "@/assets/feature-patient-portal.png";
 import revenueCycleImage from "@/assets/feature-revenue-cycle.png";
 import emrImage from "@/assets/feature-emr.png";
-import referralImage from "@/assets/referral.jpeg";
+import referralImage from "@/assets/feature-referral.png";
 import hrImage from "@/assets/feature-hr.png";
 import accountsPayableImage from "@/assets/feature-accounts-payable.png";
 import { Link } from "react-router-dom";
@@ -161,7 +161,7 @@ const HealthcareFeatures = () => {
             const whiteBgTitles = ["Revenue Cycle Management", "Patient Portal & Engagement", "Accounts Payable"];
             const bgColor = whiteBgTitles.includes(feature.title) ? "#FFFFFF" : (isLightBg ? "#FAFCFD" : undefined);
             const hasBorder = borderTitles.includes(feature.title);
-            const isThickBorder = ["Accounts Payable", "Practice Management Solutions", "Human Resources"].includes(feature.title);
+            const isThickBorder = ["Accounts Payable", "Practice Management Solutions", "Human Resources", "Revenue Cycle Management", "Electronic Medical Records", "Referral Portal", "Patient Portal & Engagement"].includes(feature.title);
           return <div
               key={index}
               className={`grid lg:grid-cols-2 gap-8 items-center p-8 rounded-2xl ${isLightBg ? 'text-black' : ''} ${hasBorder ? 'border' : ''}`}

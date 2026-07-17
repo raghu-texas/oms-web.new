@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRef, useState } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import hrImage from "@/assets/hr-application.png";
 import consentImage from "@/assets/consent-form.png";
 import consentImage1 from "@/assets/consent-form1.png";
@@ -10,11 +11,11 @@ import scanImage1 from "@/assets/scan-application1.png";
 import emrImage from "@/assets/emr-system.png";
 import patientPortalImage from "@/assets/feature-patient-portal.png";
 import patientPortalImage1 from "@/assets/feature-patient-portal1.png";
-import referralImage from "@/assets/referral.jpeg";
+import referralImage from "@/assets/referral.png";
 import credentialImage from "@/assets/provider-credentialing.png";
 import apImage from "@/assets/ap-application.png";
 import practiceImage from "@/assets/Practice_management.png";
-import smsImage from "@/assets/sms-dashboard.jfif";
+import smsImage from "@/assets/sms-dashboard.png";
 import rcmImage from "@/assets/rcm-revenue-cycle-management.png";
 import iosImage from "@/assets/ios.png";
 import androidImage from "@/assets/android.png";
@@ -82,65 +83,52 @@ const ServiceDetail = () => {
     </div>
   );
 
-  const ZoomableImage = ({ src, alt, height = "auto", borderWidth = 6, borderColor = '#010101' }: { src: string; alt: string; height?: string; borderWidth?: number; borderColor?: string }) => {
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const [lens, setLens] = useState({ visible: false, rect: null as DOMRect | null });
-
-    const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      setLens({ visible: true, rect });
-    };
-
-    const handleLeave = () => setLens({ visible: false, rect: null });
-
-    const rect = lens.rect;
-    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
-    const screenCenterX = window.innerWidth / 2;
-    const screenCenterY = window.innerHeight / 2;
-    const translateX = screenCenterX - originX;
-    const translateY = screenCenterY - originY + 36;
+  const ZoomableImage = ({ src, alt, height = "auto", borderWidth = 6, borderColor = '#010101', fit = "cover" }: { src: string; alt: string; height?: string; borderWidth?: number; borderColor?: string; fit?: "cover" | "contain" }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <div className="relative w-full mx-auto">
-        <div
-          ref={containerRef}
-          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border w-full bg-white flex items-center justify-center"
-          style={{ borderColor: borderColor, borderWidth: `${borderWidth}px`, height: height }}
-          onMouseMove={handleMove}
-          onMouseEnter={handleMove}
-          onMouseLeave={handleLeave}
-        >
-          <ImageWithFallback
-            src={src}
-            alt={alt}
-            className={`w-auto h-auto max-w-full max-h-full object-fill`}
-          />
+      <>
+        <div className="relative w-full mx-auto">
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="w-full text-left cursor-zoom-in"
+            aria-label={`Open ${alt}`}
+          >
+            <div
+              className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border w-full bg-white"
+              style={{ borderColor: borderColor, borderWidth: `${borderWidth}px`, height: height }}
+            >
+              <ImageWithFallback
+                src={src}
+                alt={alt}
+                className={`w-full h-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
+              />
+            </div>
+          </button>
         </div>
-        <div
-          className="pointer-events-none fixed w-[877px] h-[582px] rounded-2xl border shadow bg-white overflow-hidden"
-          style={{
-            borderColor: borderColor,
-            borderWidth: `${borderWidth}px`,
-            zIndex: 50,
-            left: originX,
-            top: originY,
-            transform: lens.visible 
-              ? `translate(calc(-50% + ${translateX}px), calc(-50% + ${translateY}px)) scale(1)` 
-              : 'translate(-50%, -50%) scale(0.2)',
-            opacity: lens.visible ? 1 : 0,
-            transition: 'all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-            visibility: lens.visible ? 'visible' : 'hidden',
-          }}
-        >
-          <ImageWithFallback
-            src={src}
-            alt={`${alt} preview`}
-            className="w-auto h-full object-fill"
-          />
-        </div>
-      </div>
+
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className="fixed inset-0 z-50 flex items-center justify-center border-0 bg-black/80 p-2 sm:p-4 left-0 top-0 translate-x-0 translate-y-0 w-auto max-w-none">
+            <DialogTitle className="sr-only">{alt}</DialogTitle>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="absolute right-4 top-4 z-10 rounded-full bg-red-600 p-2 text-white shadow-lg hover:bg-red-700"
+              aria-label="Close image"
+            >
+              <X size={20} />
+            </button>
+            <div className="flex items-center justify-center max-h-[92vh] max-w-[95vw] overflow-hidden rounded-xl bg-white">
+              <ImageWithFallback
+                src={src}
+                alt={alt}
+                className="max-h-[92vh] max-w-[95vw] w-auto h-auto object-contain"
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
     );
   };
 
@@ -231,8 +219,8 @@ const ServiceDetail = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch" style={{ alignItems: 'stretch' }}>
               <div className="flex flex-col gap-4 w-full">
-                <ZoomableImage src={patientPortalImage} alt="Patient Portal" height="360px" />
-                <ZoomableImage src={patientPortalImage1} alt="Patient Portal Features" height="360px" />
+                <ZoomableImage src={patientPortalImage} alt="Patient Portal" height="360px" borderWidth={15} borderColor="#000" />
+                <ZoomableImage src={patientPortalImage1} alt="Patient Portal Features" height="360px" borderWidth={15} borderColor="#000" />
               </div>
               <div className="space-y-6 flex flex-col h-full lg:border-l lg:pl-8 border-[#D2DEF9]" style={{ minHeight: '360px' }}>
                 <p className="text-sm sm:text-base text-[#010101]">
@@ -282,7 +270,7 @@ const ServiceDetail = () => {
         ) : slug === "emr" ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              <ZoomableImage src={item.src} alt={item.title} height="360px" />
+              <ZoomableImage src={item.src} alt={item.title} height="fit-content" borderWidth={15} borderColor="#000" />
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <p className="text-sm sm:text-base text-[#010101]">
                   Our EMR is purpose-built to support the clinical needs of oral surgery practices, delivering precise, efficient documentation and seamless integration with your clinical workflows—from patient history to vitals during surgery.
@@ -350,7 +338,7 @@ const ServiceDetail = () => {
         ) : slug === "referral-portal" ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              <ZoomableImage src={item.src} alt={item.title} height="360px" />
+              <ZoomableImage src={item.src} alt={item.title} height="fit-content" borderWidth={15} borderColor="#000" />
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <p className="text-sm sm:text-base text-[#010101]">
                   Our Referral Portal streamlines collaboration between your oral surgery practice and referring providers, making it easier to manage patient care efficiently.
@@ -391,7 +379,7 @@ const ServiceDetail = () => {
         ) : slug === "credentialing" ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              <ZoomableImage src={item.src} alt={item.title} height="360px" />
+              <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" />
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
                   <h2 className="text-xl font-semibold text-[#0D47A1]">Provider Credentialing Management</h2>
@@ -446,7 +434,7 @@ const ServiceDetail = () => {
         ) : slug === "rcm" ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              <ZoomableImage src={item.src} alt={item.title} height="420px" />
+              <ZoomableImage src={item.src} alt={item.title} height="420px" borderWidth={15} borderColor="#000" fit="contain" />
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
                   <h2 className="text-xl font-semibold text-[#0D47A1]">Revenue Cycle Management (RCM)</h2>
@@ -538,8 +526,8 @@ const ServiceDetail = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
               <div className="flex flex-col gap-6 w-full">
-                <ZoomableImage src={iosImage} alt="iOS App" height="360px" />
-                <ZoomableImage src={androidImage} alt="Android App" height="360px" />
+                <ZoomableImage src={iosImage} alt="iOS App" height="fit-content" borderWidth={15} borderColor="#000" />
+                <ZoomableImage src={androidImage} alt="Android App" height="fit-content" borderWidth={15} borderColor="#000" />
               </div>
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
@@ -583,8 +571,8 @@ const ServiceDetail = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div className="flex flex-col gap-6 w-full">
-                <ZoomableImage src={item.src} alt={item.title} height="360px" />
-                <ZoomableImage src={scanImage1} alt={`${item.title} - Additional View`} height="360px" />
+                <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" />
+                <ZoomableImage src={scanImage1} alt={`${item.title} - Additional View`} height="360px" borderWidth={15} borderColor="#000" />
               </div>
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
@@ -629,8 +617,8 @@ const ServiceDetail = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div className="flex flex-col gap-6 w-full">
-                <ZoomableImage src={item.src} alt={item.title} height="360px" />
-                <ZoomableImage src={consentImage1} alt={`${item.title} - Additional View`} height="360px" />
+                <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" />
+                <ZoomableImage src={consentImage1} alt={`${item.title} - Additional View`} height="360px" borderWidth={15} borderColor="#000" />
               </div>
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
