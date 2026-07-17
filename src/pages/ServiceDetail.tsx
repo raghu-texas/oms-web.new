@@ -83,7 +83,7 @@ const ServiceDetail = () => {
     </div>
   );
 
-  const ZoomableImage = ({ src, alt, height = "auto", borderWidth = 6, borderColor = '#010101', fit = "cover" }: { src: string; alt: string; height?: string; borderWidth?: number; borderColor?: string; fit?: "cover" | "contain" }) => {
+  const ZoomableImage = ({ src, alt, height = "auto", borderWidth = 6, borderColor = '#010101', fit = "cover" }: { src: string; alt: string; height?: string; borderWidth?: number; borderColor?: string; fit?: "cover" | "contain" | "fill" }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -102,7 +102,7 @@ const ServiceDetail = () => {
               <ImageWithFallback
                 src={src}
                 alt={alt}
-                className={`w-full h-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
+                className={`w-full h-full ${fit === "contain" ? "object-contain" : fit === "fill" ? "object-fill" : "object-cover"}`}
               />
             </div>
           </button>
@@ -219,8 +219,8 @@ const ServiceDetail = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch" style={{ alignItems: 'stretch' }}>
               <div className="flex flex-col gap-4 w-full">
-                <ZoomableImage src={patientPortalImage} alt="Patient Portal" height="360px" borderWidth={15} borderColor="#000" />
-                <ZoomableImage src={patientPortalImage1} alt="Patient Portal Features" height="360px" borderWidth={15} borderColor="#000" />
+                <ZoomableImage src={patientPortalImage} alt="Patient Portal" height="360px" borderWidth={15} borderColor="#000" fit="fill" />
+                <ZoomableImage src={patientPortalImage1} alt="Patient Portal Features" height="360px" borderWidth={15} borderColor="#000" fit="fill" />
               </div>
               <div className="space-y-6 flex flex-col h-full lg:border-l lg:pl-8 border-[#D2DEF9]" style={{ minHeight: '360px' }}>
                 <p className="text-sm sm:text-base text-[#010101]">
@@ -379,7 +379,7 @@ const ServiceDetail = () => {
         ) : slug === "credentialing" ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" />
+              <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" fit="fill" />
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
                   <h2 className="text-xl font-semibold text-[#0D47A1]">Provider Credentialing Management</h2>
@@ -571,8 +571,8 @@ const ServiceDetail = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div className="flex flex-col gap-6 w-full">
-                <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" />
-                <ZoomableImage src={scanImage1} alt={`${item.title} - Additional View`} height="360px" borderWidth={15} borderColor="#000" />
+                <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" fit="fill" />
+                <ZoomableImage src={scanImage1} alt={`${item.title} - Additional View`} height="360px" borderWidth={15} borderColor="#000" fit="fill" />
               </div>
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">
@@ -617,8 +617,8 @@ const ServiceDetail = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div className="flex flex-col gap-6 w-full">
-                <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" />
-                <ZoomableImage src={consentImage1} alt={`${item.title} - Additional View`} height="360px" borderWidth={15} borderColor="#000" />
+                <ZoomableImage src={item.src} alt={item.title} height="360px" borderWidth={15} borderColor="#000" fit="fill" />
+                <ZoomableImage src={consentImage1} alt={`${item.title} - Additional View`} height="360px" borderWidth={15} borderColor="#000" fit="fill" />
               </div>
               <div className="space-y-6 lg:border-l lg:pl-8 border-[#D2DEF9]">
                 <div className="space-y-3">

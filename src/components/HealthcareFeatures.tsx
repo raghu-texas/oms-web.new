@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import practiceMgmtImage from "@/assets/feature-practice-mgmt1.png";
 import patientPortalImage from "@/assets/feature-patient-portal.png";
 import revenueCycleImage from "@/assets/feature-revenue-cycle.png";
@@ -8,78 +8,63 @@ import hrImage from "@/assets/feature-hr.png";
 import accountsPayableImage from "@/assets/feature-accounts-payable.png";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
 const HealthcareFeatures = () => {
-  const ZoomableImage = ({ src, alt, borderWidth = 1, borderColor = '#D2DEF9' }: { src: string; alt: string; borderWidth?: number; borderColor?: string }) => {
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const [lens, setLens] = useState({ visible: false, rect: null as DOMRect | null });
+  const ZoomableImage = ({ src, alt, borderWidth = 1, borderColor = '#D2DEF9', imageFit = 'fill' }: { src: string; alt: string; borderWidth?: number; borderColor?: string; imageFit?: 'cover' | 'contain' | 'fill' }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      setLens({ visible: true, rect });
-    };
-
-    const handleLeave = () => setLens({ visible: false, rect: null });
-
-    // Calculate animation origin from image position
-    const rect = lens.rect;
-    const originX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-    const originY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
-    const screenCenterX = window.innerWidth / 2;
-    const screenCenterY = window.innerHeight / 2;
-    
-    // Distance from image center to screen center
-    const translateX = screenCenterX - originX;
-    const translateY = screenCenterY - originY + 36; // 0.25in ≈ 36px
+    const imageClass = `w-full h-full ${imageFit === 'contain' ? 'object-contain' : imageFit === 'fill' ? 'object-fill' : 'object-cover'} rounded-2xl`;
 
     return (
-      <div className="relative w-full mx-auto">
-        <div
-          ref={containerRef}
-          className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow w-[90%] h-[360px] mx-auto box-border"
-          onMouseMove={handleMove}
-          onMouseEnter={handleMove}
-          onMouseLeave={handleLeave}
-        >
-          <div className="w-full h-full overflow-hidden rounded-2xl">
-            <ImageWithFallback
-              src={src}
-              alt={alt}
-              className="w-full h-full object-cover rounded-2xl"
-              style={{
-                borderColor,
-                borderWidth: `${borderWidth}px`,
-                borderStyle: 'solid',
-                boxSizing: 'border-box'
-              }}
-            />
-          </div>
+      <>
+        <div className="relative w-full mx-auto">
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="w-full text-left cursor-zoom-in"
+            aria-label={`Open ${alt}`}
+          >
+            <div className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow w-[90%] h-[360px] mx-auto box-border">
+              <div className="w-full h-full overflow-hidden rounded-2xl">
+                <ImageWithFallback
+                  src={src}
+                  alt={alt}
+                  className={imageClass}
+                  style={{
+                    borderColor,
+                    borderWidth: `${borderWidth}px`,
+                    borderStyle: 'solid',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
+            </div>
+          </button>
         </div>
-        <div
-          className="pointer-events-none fixed w-[877px] h-[582px] rounded-2xl shadow bg-white overflow-hidden"
-          style={{
-            borderColor: borderColor,
-            borderWidth: `${borderWidth}px`,
-            borderStyle: 'solid',
-            zIndex: 50,
-            left: originX,
-            top: originY,
-            transform: lens.visible 
-              ? `translate(calc(-50% + ${translateX}px), calc(-50% + ${translateY}px)) scale(1)` 
-              : 'translate(-50%, -50%) scale(0.2)',
-            opacity: lens.visible ? 1 : 0,
-            transition: '1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-            visibility: lens.visible ? 'visible' : 'hidden',
-          }}
-        >
-          <ImageWithFallback
-            src={src}
-            alt={`${alt} preview`}
-            className="w-full h-full object-fill"
-          />
-        </div>
-      </div>
+
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className="fixed inset-0 z-50 flex items-center justify-center border-0 bg-black/80 p-2 sm:p-4 left-0 top-0 translate-x-0 translate-y-0 w-auto max-w-none">
+            <DialogTitle className="sr-only">{alt}</DialogTitle>
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="absolute right-4 top-4 z-10 rounded-full bg-red-600 p-2 text-white shadow-lg hover:bg-red-700"
+              aria-label="Close image"
+            >
+              <X size={20} />
+            </button>
+            <div className="flex items-center justify-center max-h-[92vh] max-w-[95vw] overflow-hidden rounded-xl bg-white">
+              <ImageWithFallback
+                src={src}
+                alt={alt}
+                className="max-h-[92vh] max-w-[95vw] w-auto h-auto object-contain"
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
     );
   };
 
@@ -174,6 +159,7 @@ const HealthcareFeatures = () => {
                     alt={feature.title}
                     borderWidth={isThickBorder ? 15 : 1}
                     borderColor={isThickBorder ? '#000' : '#D2DEF9'}
+                    imageFit="fill"
                   />
                 </div>
 
