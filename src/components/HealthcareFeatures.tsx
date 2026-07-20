@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import practiceMgmtImage from "@/assets/feature-practice-mgmt1.png";
 import patientPortalImage from "@/assets/feature-patient-portal.png";
 import revenueCycleImage from "@/assets/feature-revenue-cycle.png";
@@ -9,20 +9,139 @@ import accountsPayableImage from "@/assets/feature-accounts-payable.png";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { X } from "lucide-react";
+import { X, Plus, Minus } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
 const HealthcareFeatures = () => {
-  const ZoomableImage = ({ src, alt, borderWidth = 1, borderColor = '#D2DEF9', imageFit = 'fill' }: { src: string; alt: string; borderWidth?: number; borderColor?: string; imageFit?: 'cover' | 'contain' | 'fill' }) => {
+  const ZoomableImage = ({ src, alt, borderWidth = 1, borderColor = '#D2DEF9', imageFit = 'fill', zoomControls = false }: { src: string; alt: string; borderWidth?: number; borderColor?: string; imageFit?: 'cover' | 'contain' | 'fill'; zoomControls?: boolean }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [zoomLevel, setZoomLevel] = useState(1);
+    const [panX, setPanX] = useState(0);
+    const [panY, setPanY] = useState(0);
+    const [isPanning, setIsPanning] = useState(false);
+    const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+    const isPanningRef = useRef(false);
+    const panRef = useRef({ x: 0, y: 0 });
+    const imageRef = useRef<HTMLImageElement | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+    const [touchStartDistance, setTouchStartDistance] = useState<number | null>(null);
+    const [touchMidpoint, setTouchMidpoint] = useState<{ x: number; y: number } | null>(null);
 
     const imageClass = `w-full h-full ${imageFit === 'contain' ? 'object-contain' : imageFit === 'fill' ? 'object-fill' : 'object-cover'} rounded-2xl`;
+
+    const updateTransform = (zoom: number, x: number, y: number) => {
+      if (imageRef.current) {
+        imageRef.current.style.transform = `translate(${x}px, ${y}px) scale(${zoom})`;
+        imageRef.current.style.transition = isPanningRef.current ? 'none' : 'transform 0.2s ease';
+      }
+    };
+
+    const setZoom = (nextZoom: number) => {
+      const clamped = Math.min(Math.max(nextZoom, 1), 3);
+      setZoomLevel(clamped);
+      if (clamped === 1) {
+        panRef.current = { x: 0, y: 0 };
+        setPanX(0);
+        setPanY(0);
+      }
+      updateTransform(clamped, panRef.current.x, panRef.current.y);
+    };
+
+    const zoomIn = () => setZoom(zoomLevel + 0.25);
+    const zoomOut = () => setZoom(zoomLevel - 0.25);
+    const resetZoom = () => setZoom(1);
+
+    const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!zoomControls || zoomLevel <= 1) return;
+      setIsPanning(true);
+      isPanningRef.current = true;
+      pointerStartRef.current = { x: event.clientX, y: event.clientY };
+      event.currentTarget.setPointerCapture(event.pointerId);
+    };
+
+    const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!isPanningRef.current || !pointerStartRef.current) return;
+      event.preventDefault();
+      const deltaX = event.clientX - pointerStartRef.current.x;
+      const deltaY = event.clientY - pointerStartRef.current.y;
+      pointerStartRef.current = { x: event.clientX, y: event.clientY };
+      panRef.current = { x: panRef.current.x + deltaX, y: panRef.current.y + deltaY };
+      setPanX(panRef.current.x);
+      setPanY(panRef.current.y);
+      updateTransform(zoomLevel, panRef.current.x, panRef.current.y);
+    };
+
+    const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!isPanningRef.current) return;
+      setIsPanning(false);
+      isPanningRef.current = false;
+      pointerStartRef.current = null;
+      setPanX(panRef.current.x);
+      setPanY(panRef.current.y);
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    };
+
+    const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+      if (!zoomControls) return;      if (!imageRef.current?.contains(event.target as Node)) return;      event.preventDefault();
+      const delta = event.deltaY > 0 ? -0.15 : 0.15;
+      setZoom(zoomLevel + delta);
+    };
+
+    const getTouchDistance = (touches: React.TouchList) => {
+      if (touches.length < 2) return null;
+      const firstTouch = touches.item(0);
+      const secondTouch = touches.item(1);
+      if (!firstTouch || !secondTouch) return null;
+      const dx = firstTouch.clientX - secondTouch.clientX;
+      const dy = firstTouch.clientY - secondTouch.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    const getTouchMidpoint = (touches: React.TouchList) => {
+      if (touches.length < 2) return null;
+      const firstTouch = touches.item(0);
+      const secondTouch = touches.item(1);
+      if (!firstTouch || !secondTouch) return null;
+      return {
+        x: (firstTouch.clientX + secondTouch.clientX) / 2,
+        y: (firstTouch.clientY + secondTouch.clientY) / 2,
+      };
+    };
+
+    const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+      if (!zoomControls || event.touches.length < 2) return;
+      if (!imageRef.current?.contains(event.target as Node)) return;
+      const distance = getTouchDistance(event.touches);
+      const midpoint = getTouchMidpoint(event.touches);
+      setTouchStartDistance(distance);
+      setTouchMidpoint(midpoint);
+    };
+
+    const handleTouchMove = (event: React.TouchEvent<HTMLImageElement>) => {
+      if (!zoomControls || event.touches.length < 2 || touchStartDistance === null || !touchMidpoint) return;
+      if (!imageRef.current?.contains(event.target as Node)) return;
+      event.preventDefault();
+      const distance = getTouchDistance(event.touches);
+      if (!distance) return;
+      const scale = distance / touchStartDistance;
+      const nextZoom = zoomLevel * scale;
+      setZoom(nextZoom);
+      setTouchStartDistance(distance);
+    };
+
+    const handleTouchEnd = () => {
+      setTouchStartDistance(null);
+      setTouchMidpoint(null);
+    };
 
     return (
       <>
         <div className="relative w-full mx-auto">
           <button
             type="button"
-            onClick={() => setIsOpen(true)}
+            onClick={() => {
+              setIsOpen(true);
+              setZoomLevel(1);
+            }}
             className="w-full text-left cursor-zoom-in"
             aria-label={`Open ${alt}`}
           >
@@ -55,12 +174,60 @@ const HealthcareFeatures = () => {
             >
               <X size={20} />
             </button>
+            {zoomControls && (
+              <div className="absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full bg-white/90 p-2 shadow-lg">
+                <button
+                  type="button"
+                  onClick={zoomOut}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-slate-700"
+                  aria-label="Zoom out"
+                >
+                  <Minus size={18} />
+                </button>
+                <button
+                  type="button"
+                  onClick={resetZoom}
+                  className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded-full border border-slate-300 bg-white px-2 text-sm text-slate-900 hover:bg-slate-100"
+                  aria-label="Reset zoom"
+                >
+                  {zoomLevel.toFixed(2)}x
+                </button>
+                <button
+                  type="button"
+                  onClick={zoomIn}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-slate-700"
+                  aria-label="Zoom in"
+                >
+                  <Plus size={18} />
+                </button>
+              </div>
+            )}
             <div className="flex items-center justify-center max-h-[92vh] max-w-[95vw] overflow-hidden rounded-xl bg-white">
-              <ImageWithFallback
-                src={src}
-                alt={alt}
-                className="max-h-[92vh] max-w-[95vw] w-auto h-auto object-contain"
-              />
+              <div className="relative rounded-3xl overflow-hidden border border-slate-300/60 shadow-inner bg-slate-50">
+                <ImageWithFallback
+                  ref={imageRef}
+                  draggable={false}
+                  src={src}
+                  alt={alt}
+                  className="max-h-[92vh] max-w-[95vw] object-contain"
+                  onPointerDown={handlePointerDown}
+                  onPointerMove={handlePointerMove}
+                  onPointerUp={handlePointerUp}
+                  onPointerCancel={handlePointerUp}
+                  onWheel={handleWheel}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                  style={{
+                    transform: `translate(${panX}px, ${panY}px) scale(${zoomLevel})`,
+                    transformOrigin: 'center center',
+                    transition: isPanning ? 'none' : 'transform 0.2s ease',
+                    cursor: zoomControls && zoomLevel > 1 ? (isPanning ? 'grabbing' : 'grab') : 'auto',
+                    touchAction: 'none',
+                    userSelect: 'none',
+                  }}
+                />
+              </div>
             </div>
           </DialogContent>
         </Dialog>
@@ -160,6 +327,7 @@ const HealthcareFeatures = () => {
                     borderWidth={isThickBorder ? 15 : 1}
                     borderColor={isThickBorder ? '#000' : '#D2DEF9'}
                     imageFit="fill"
+                    zoomControls={feature.title === 'Practice Management Solutions'}
                   />
                 </div>
 
