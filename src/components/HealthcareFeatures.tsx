@@ -202,14 +202,14 @@ const HealthcareFeatures = () => {
                 </button>
               </div>
             )}
-            <div className="flex items-center justify-center max-h-[92vh] max-w-[95vw] overflow-hidden rounded-xl bg-white">
-              <div className="relative rounded-3xl overflow-hidden border border-slate-300/60 shadow-inner bg-slate-50">
+            <div className="flex items-center justify-center h-[92vh] w-[80vw] overflow-hidden rounded-xl bg-white">
+              <div className="relative h-full w-full rounded-3xl overflow-hidden border border-slate-300/60 shadow-inner bg-slate-50">
                 <ImageWithFallback
                   ref={imageRef}
                   draggable={false}
                   src={src}
                   alt={alt}
-                  className="max-h-[92vh] max-w-[95vw] object-contain"
+                  className="h-full w-full max-h-[92vh] max-w-[95vw] object-fill"
                   onPointerDown={handlePointerDown}
                   onPointerMove={handlePointerMove}
                   onPointerUp={handlePointerUp}
