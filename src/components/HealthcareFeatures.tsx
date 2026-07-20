@@ -175,19 +175,19 @@ const HealthcareFeatures = () => {
               <X size={20} />
             </button>
             {zoomControls && (
-              <div className="absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full bg-white/90 p-2 shadow-lg">
+              <div className="absolute left-1/2 top-3 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-slate-200 bg-white/95 px-1.5 py-1 shadow-md backdrop-blur-sm">
                 <button
                   type="button"
                   onClick={zoomOut}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-slate-700"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-slate-700"
                   aria-label="Zoom out"
                 >
-                  <Minus size={18} />
+                  <Minus size={14} />
                 </button>
                 <button
                   type="button"
                   onClick={resetZoom}
-                  className="inline-flex h-10 min-w-[2.5rem] items-center justify-center rounded-full border border-slate-300 bg-white px-2 text-sm text-slate-900 hover:bg-slate-100"
+                  className="inline-flex h-7 min-w-[2rem] items-center justify-center rounded-full border border-slate-300 bg-white px-1.5 text-[11px] font-medium text-slate-900 hover:bg-slate-100"
                   aria-label="Reset zoom"
                 >
                   {zoomLevel.toFixed(2)}x
@@ -195,10 +195,10 @@ const HealthcareFeatures = () => {
                 <button
                   type="button"
                   onClick={zoomIn}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-slate-700"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-slate-700"
                   aria-label="Zoom in"
                 >
-                  <Plus size={18} />
+                  <Plus size={14} />
                 </button>
               </div>
             )}
