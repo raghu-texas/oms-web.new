@@ -188,7 +188,7 @@ const ProductsServices = () => {
                     e.currentTarget.style.backgroundColor = '#0066b1';
                   }}
                   onClick={() => {
-                    if (isPractice) return goTo("/practice-management");
+                    if (isPractice) return goTo("/services/practice");
                     if (isRCM) return goTo("/services/rcm");
                     if (isHR) return goTo("/services/hr");
                     if (isConsent) return goTo("/services/consent");

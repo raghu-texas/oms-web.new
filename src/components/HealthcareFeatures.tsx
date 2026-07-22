@@ -283,7 +283,7 @@ const HealthcareFeatures = () => {
     "Referral Portal",
   ];
   const exploreRouteByTitle: Record<string, string> = {
-    "Practice Management Solutions": "/practice-management",
+    "Practice Management Solutions": "/services/practice",
     "Electronic Medical Records": "/services/emr",
     "Revenue Cycle Management": "/services/rcm",
     "Human Resources": "/services/hr",
