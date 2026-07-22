@@ -56,7 +56,7 @@ const imageMap: Record<string, { title: string; src: string }> = {
   hr: { title: "Human Resources", src: hrImage },
   consent: { title: "Consent Forms", src: consentImage },
   scan: { title: "Scan Application", src: scanImage },
-  emr: { title: "EMR Systems", src: emrImage },
+  emr: { title: "EMR System", src: emrImage },
   "patient-portal": { title: "Patient Portal", src: patientPortalImage },
   "referral-portal": { title: "Referral Portal", src: referralImage },
   credentialing: { title: "Provider Credentialing", src: credentialImage },
