@@ -4,7 +4,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Autoplay from "embla-carousel-autoplay";
 
 import dentalHero1 from "@/assets/dental-hero-1.jpg";
-import dentalHero2 from "@/assets/dental-hero-2.jpg";
+import dentalHero2 from "@/assets/dental-hero-2.png";
 import dentalHero3 from "@/assets/dental-hero-3.jpg";
 import dentalAI from "@/assets/dental-ai.jpg";
 import clinicalExcellence from "@/assets/Clinical_Excellence.png";
