@@ -22,6 +22,7 @@ import texasaiLogo from "@/assets/Texasai-Logo.png";
 import twilioLogo from "@/assets/twilio.png";
 import waystarLogo from "@/assets/waystar.png";
 import sotaCloudLogo from "@/assets/SotaCloudLogo.png";
+import dmaLogo from "@/assets/dma.png";
 
 const partnerLogos = [
   { name: "Criticare", src: criticareLogo },
@@ -36,6 +37,7 @@ const partnerLogos = [
   { name: "Twilio", src: twilioLogo },
   { name: "Waystar", src: waystarLogo },
   { name: "SotaCloud", src: sotaCloudLogo },
+  { name: "Data Media Associates", src: dmaLogo },
 ];
 
 const AboutUs = () => {
