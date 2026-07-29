@@ -36,9 +36,9 @@ const navItems = [
     },
     {
       name: "Contact Us",
-      href: "#contact",
+      href: "/contact-us",
       icon: Mail,
-      isRoute: false
+      isRoute: true
     }
   ];
 
@@ -94,7 +94,7 @@ const Header = () => {
               );
             })}
             <div className="flex items-center gap-3 ml-4">
-              <Button variant="outline" size="lg" onClick={() => navigate('/login')}>
+              <Button variant="outline" size="lg" onClick={() => navigate('/login')} className="invisible">
                 Login
               </Button>
               <Button asChild variant="default" size="lg">
@@ -131,7 +131,7 @@ const Header = () => {
                 );
               })}
               <div className="flex flex-col gap-3 mt-2">
-                <Button variant="outline" size="lg" onClick={() => { navigate('/login'); setIsMenuOpen(false); }}>
+                <Button variant="outline" size="lg" onClick={() => { navigate('/login'); setIsMenuOpen(false); }} className="invisible">
                   Login
                 </Button>
                 <Button asChild variant="default" size="lg">
