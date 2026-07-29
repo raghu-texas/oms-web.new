@@ -98,7 +98,7 @@ const Header = () => {
                 Login
               </Button>
               <Button asChild variant="default" size="lg">
-                <a href="/book-demo">Book Free Demo</a>
+                <a href="/book-demo">Request Demo</a>
               </Button>
             </div>
           </nav>
@@ -135,7 +135,7 @@ const Header = () => {
                   Login
                 </Button>
                 <Button asChild variant="default" size="lg">
-                  <a href="/book-demo">Book Free Demo</a>
+                  <a href="/book-demo">Request Demo</a>
                 </Button>
               </div>
             </div>

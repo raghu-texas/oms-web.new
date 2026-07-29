@@ -238,11 +238,11 @@ const HealthcareFeatures = () => {
   const features = [{
     image: practiceMgmtImage,
     title: "Practice Management Solutions",
-    description: "Comprehensive practice management software that streamlines scheduling, billing, and workflow optimization. Our integrated platform helps you manage every aspect of your healthcare practice efficiently, from appointment booking to revenue cycle management. Reduce administrative burden and focus more on patient care with our intelligent automation features."
+    description: "Comprehensive practice management software that streamlines scheduling, billing, and workflow optimization. Our integrated platform helps you manage every aspect of your healthcare practice efficiently, from appointment booking to revenue cycle management. Reduce administrative burden and focus more on patient care with our oral surgery features."
   }, {
     image: revenueCycleImage,
     title: "Revenue Cycle Management",
-    description: "Maximize your practice's financial performance with our intelligent billing and revenue cycle management solution. Automated claim submission, denial management, and real-time eligibility verification streamline your billing processes. Our analytics dashboard provides insights into financial performance, helping you identify opportunities for revenue optimization."
+    description: "Maximize your practice's financial performance with our intelligent billing and revenue cycle management solution. Medical & dental claim submission, line item posting denial management, strengthen your billing processes. Our analytics dashboard provides insights into financial performance, helping you identify opportunities for revenue optimization."
   }, {
     image: emrImage,
     title: "Electronic Medical Records",

@@ -63,7 +63,7 @@ const Resources = () => {
       <section className="rounded-2xl p-6 shadow-sm mb-10 border border-gray-300" style={{ backgroundColor: '#FAFCFD' }}>
         <div className="grid lg:grid-cols-2 gap-8 items-center">
           <div className="rounded-2xl overflow-hidden">
-            <img src={trainingImg} alt="Training" className="w-full h-[360px] object-cover" loading="lazy" decoding="async" />
+            <img src={trainingImg} alt="Training" className="w-full h-[360px] object-fill" loading="lazy" decoding="async" />
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-foreground">Training & Implementation</h2>
