@@ -26,7 +26,7 @@ const Services = () => {
     {
       icon: FileText,
       title: "Consent Forms",
-      description: "Digital consent management system ensuring secure, compliant documentation for all Oral surgery procedures and treatments."
+      description: "Digital consent management system ensuring secure, compliant documentation for all oral surgery procedures and treatments."
     },
     {
       icon: Workflow,
@@ -42,7 +42,7 @@ const Services = () => {
     {
       icon: Scan,
       title: "Scan Application",
-      description: "Advanced Document management solutions with integrated AI analysis for Preserving EOB and Payment records."
+      description: "Advanced document management solutions with integrated AI analysis for preserving EOB and payment records."
     },
     {
       icon: Workflow,

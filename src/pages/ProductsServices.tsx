@@ -41,7 +41,7 @@ const ProductsServices = () => {
       icon: FileText,
       title: "Consent Forms",
       id: "consent-forms",
-      description: "Digital consent management system ensuring secure, compliant documentation for all Oral surgery procedures and treatments."
+      description: "Digital consent management system ensuring secure, compliant documentation for all oral surgery procedures and treatments."
     },
     {
       icon: Share2,
@@ -59,7 +59,7 @@ const ProductsServices = () => {
       icon: Scan,
       title: "Scan Application",
       id: "scan-application",
-      description: "Advanced Document management solutions with integrated AI analysis for Preserving EOB and Payment records."
+      description: "Advanced document management solutions with integrated AI analysis for preserving EOB and payment records."
     },
     {
       icon: ShieldCheck,

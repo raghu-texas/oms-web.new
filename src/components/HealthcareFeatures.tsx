@@ -242,7 +242,7 @@ const HealthcareFeatures = () => {
   }, {
     image: revenueCycleImage,
     title: "Revenue Cycle Management",
-    description: "Maximize your practice's financial performance with our intelligent billing and revenue cycle management solution. Medical & dental claim submission, line item posting and denial management, strengthen your billing processes. Our analytics dashboard provides insights into financial performance, helping you identify opportunities for revenue optimization."
+    description: "Maximize your practice's financial performance with our intelligent billing and revenue cycle management solution. Medical & dental claim submission, line item posting and denial management strengthen your billing processes. Our analytics dashboard provides insights into financial performance, helping you identify opportunities for revenue optimization."
   }, {
     image: emrImage,
     title: "Electronic Medical Records",
@@ -327,7 +327,7 @@ const HealthcareFeatures = () => {
                     borderWidth={isThickBorder ? 15 : 1}
                     borderColor={isThickBorder ? '#000' : '#D2DEF9'}
                     imageFit="fill"
-                    zoomControls={feature.title === 'Practice Management Solutions'}
+                    zoomControls={false}
                   />
                 </div>
 

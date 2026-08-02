@@ -58,18 +58,21 @@ const Hero = () => {
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                   <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" loading="eager" decoding="async" />
-                  {index !== 0 && <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/50 to-transparent" />}
+                  <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/50 to-transparent" />
                 </div>
 
                 {/* Content */}
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                  <div className={`max-w-3xl ${index === 0 ? "-mt-20 sm:-mt-24 lg:-mt-60" : ""}`}>
+                <div
+                  className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+                  style={index === 0 ? { transform: "translateY(-1.5in)" } : undefined}
+                >
+                  <div className="max-w-4xl">
                     <h1
                       className={
                         "font-bold mb-6 animate-fade-in text-foreground break-words" +
                           (slide.title === "Advanced Oral Surgery with Clinical Excellence" ? " mt-0 sm:mt-0" : "")
                       }
-                      style={{ fontSize: '50px', lineHeight: '1', marginTop: index === 0 ? '-48px' : undefined }}
+                      style={{ fontSize: '50px', lineHeight: '1.3' }}
                     >
                       {index === 0 ? (
                         <>
@@ -94,17 +97,16 @@ const Hero = () => {
                       )}
                     </h1>
 
-                    <p style={{ position: 'absolute', top: '90px' }}
+                    <p
                       className={
-                        `text-xl mb-8 leading-relaxed animate-fade-in` +
-                          (slide.title === "Advanced Oral Surgery with Clinical Excellence" ? " mt-16 sm:mt-24 mb-0 sm:mb-0 -mt-4" : "") +
-                          (index === 0 ? " mt-12 sm:mt-16 lg:mt-10" : "")
+                        `text-xl text-foreground mb-8 leading-relaxed animate-fade-in` +
+                          (slide.title === "Advanced Oral Surgery with Clinical Excellence" ? " mt-16 sm:mt-24 mb-0 sm:mb-0 -mt-4" : "")
                       }
                     >
                       {index === 0 ? (
                         <>
-                          <span className="block text-black">Our cloud-based technology delivers powerful solutions –</span>
-                          <span className="block text-black">providing the practice management tools necessary for your success.</span>
+                          <span className="block">Our cloud-based technology delivers powerful solutions –</span>
+                          <span className="block">providing the practice management tools necessary for your success.</span>
                         </>
                       ) : (
                         slide.description
