@@ -250,7 +250,7 @@ const HealthcareFeatures = () => {
   }, {
     image: patientPortalImage,
     title: "Patient Portal & Engagement",
-    description: "Empower your patients with 24/7 access to their health records and appointment scheduling. Our secure patient portal enhances communication between providers and patients, improving satisfaction and outcomes. Features include online bill pay, prescription refills, secure messaging, and telehealth integration for modern healthcare delivery."
+    description: "Empower your patients with 24/7 access to their health records and appointment scheduling. Our secure patient portal enhances communication between providers and patients, improving satisfaction and outcomes. Features include online bill pay, prescription viewing, secure messaging, and telehealth integration for modern healthcare delivery."
   }, {
     image: referralImage,
     title: "Referral Portal",
